@@ -1,3 +1,4 @@
+package org.bluebox.space2.tests;
 import java.util.Random;
 
 import org.bluebox.space2.game.Game;

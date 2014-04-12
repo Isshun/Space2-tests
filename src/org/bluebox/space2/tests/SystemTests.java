@@ -1,3 +1,4 @@
+package org.bluebox.space2.tests;
 import static org.junit.Assert.*;
 
 import java.util.Random;

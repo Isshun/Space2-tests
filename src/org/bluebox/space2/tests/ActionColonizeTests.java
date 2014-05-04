@@ -3,6 +3,7 @@ package org.bluebox.space2.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.bluebox.space2.game.Game;
@@ -38,9 +39,9 @@ public class ActionColonizeTests {
 	public void tearDown() throws Exception {
 	}
 
-	private FleetModel getBasicFleet() {
+	private FleetModel getBasicFleet(PlayerModel player) {
 		ShipClassModel sc = new ShipClassModel("testclass", 42);
-		FleetModel fleet = new FleetModel();
+		FleetModel fleet = new FleetModel(player);
 		fleet.addShip(new ShipModel(sc));
 		return fleet;
 	}
@@ -51,13 +52,13 @@ public class ActionColonizeTests {
 	}
 
 	private void addColonizer(PlayerModel player) {
-		FleetModel fleet = getBasicFleet();
+		FleetModel fleet = getBasicFleet(player);
 		fleet.getShips().get(0).getShipClass().addDevice(Device.COLONIZER);
 		player.addFleet(fleet);
 	}
 
 	private void addBasicFleet(PlayerModel player) {
-		player.addFleet(getBasicFleet());
+		player.addFleet(getBasicFleet(player));
 	}
 
 	@Test(expected=GameException.class)
@@ -67,7 +68,7 @@ public class ActionColonizeTests {
 
 		// Try to colonize system with no planet
 		SystemModel sys = new SystemModel("sys", 0, 0);
-		sys.addFleet(player.getFleets().get(0));
+		sys.addFleet((new ArrayList<FleetModel>(player.getFleets())).get(0));
 		sys.colonize(player);
 	}
 
@@ -78,10 +79,10 @@ public class ActionColonizeTests {
 
 		SystemModel sys = new SystemModel("sys", 0, 0);
 		sys.addPlanet(new PlanetModel(PlanetClassModel.CLASS_T, 0));
-		sys.addFleet(player.getFleets().get(0));
+		sys.addFleet((new ArrayList<FleetModel>(player.getFleets())).get(0));
 		sys.colonize(player);
 	}
-
+	
 	@Test
 	public void testColonizerIsDestroyAfterColonize() {
 		PlayerModel player = getPlayerWithNoPlanet();
@@ -89,11 +90,11 @@ public class ActionColonizeTests {
 
 		SystemModel sys = new SystemModel("sys", 0, 0);
 		sys.addPlanet(new PlanetModel(PlanetClassModel.CLASS_T, 0));
-		sys.addFleet(player.getFleets().get(0));
+		sys.addFleet((new ArrayList<FleetModel>(player.getFleets())).get(0));
 
-		int nbShip = player.getFleets().get(0).getNbShip();
+		int nbShip = (new ArrayList<FleetModel>(player.getFleets())).get(0).getNbShip();
 		sys.colonize(player);
-		assertEquals(nbShip - 1, player.getFleets().get(0).getNbShip());
+		assertEquals(nbShip - 1, (new ArrayList<FleetModel>(player.getFleets())).get(0).getNbShip());
 	}
 
 	@Test
@@ -103,7 +104,7 @@ public class ActionColonizeTests {
 
 		SystemModel sys = new SystemModel("sys", 0, 0);
 		sys.addPlanet(new PlanetModel(PlanetClassModel.CLASS_T, 0));
-		sys.addFleet(player.getFleets().get(0));
+		sys.addFleet((new ArrayList<FleetModel>(player.getFleets())).get(0));
 		
 		assertNull(sys.getOwner());
 		sys.colonize(player);

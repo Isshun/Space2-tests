@@ -9,6 +9,7 @@ import java.util.List;
 import org.bluebox.space2.game.model.DeviceModel;
 import org.bluebox.space2.game.model.FleetModel;
 import org.bluebox.space2.game.model.GameException;
+import org.bluebox.space2.game.model.PlayerModel;
 import org.bluebox.space2.game.model.ShipClassModel;
 import org.bluebox.space2.game.model.ShipModel;
 import org.bluebox.space2.game.model.SystemModel;
@@ -19,6 +20,8 @@ import org.bluebox.space2.path.PathResolver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.badlogic.gdx.graphics.Color;
 
 
 public class ShipClassTests {
@@ -41,8 +44,9 @@ public class ShipClassTests {
 
 	@Test
 	public void testColonizer() {
+		PlayerModel player = new PlayerModel("player", Color.RED, Color.BLUE, false);
 		ShipClassModel sc = new ShipClassModel("testclass", 42);
-		FleetModel f = new FleetModel();
+		FleetModel f = new FleetModel(player);
 		ShipModel s = new ShipModel(sc);
 		SystemModel sys = new SystemModel("sys", 0, 0);
 		sys.addFleet(f);
@@ -72,9 +76,10 @@ public class ShipClassTests {
 
 	@Test
 	public void testSystem() {
+		PlayerModel player = new PlayerModel("player", Color.RED, Color.BLUE, false);
 		ShipClassModel sc = new ShipClassModel("testclass", 42);
 		ShipModel s = new ShipModel(sc);
-		FleetModel f1 = new FleetModel();
+		FleetModel f1 = new FleetModel(player);
 		SystemModel sys = new SystemModel("testsystem", 12, 24);
 		assertEquals(0, sys.getFleets().size());
 
@@ -85,7 +90,7 @@ public class ShipClassTests {
 		assertEquals(sys, f1.getLocation());
 		assertEquals(sys.getName(), f1.getLocationName());
 		
-		FleetModel f2 = new FleetModel();
+		FleetModel f2 = new FleetModel(player);
 		f2.setLocation(sys);
 		f2.addShip(s);
 		
@@ -106,9 +111,10 @@ public class ShipClassTests {
 
 	@Test
 	public void testMove() {
+		PlayerModel player = new PlayerModel("player", Color.RED, Color.BLUE, false);
 		ShipClassModel sc = new ShipClassModel("testclass", 42);
 		ShipModel s = new ShipModel(sc);
-		FleetModel f = new FleetModel();
+		FleetModel f = new FleetModel(player);
 		SystemModel sys = new SystemModel("sys", 0, 0);
 		sys.addFleet(f);
 		f.addShip(s);
